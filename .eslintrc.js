@@ -30,7 +30,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': ['error'],
-    // 'semi': ['error', 'never'],
+    'semi': ['error', 'always'],
     'arrow-parens': ['error', 'as-needed'],
     'no-trailing-spaces': 'error',
     'import/extensions': 'off',
@@ -46,4 +46,4 @@ module.exports = {
     'import/no-extraneous-dependencies': ["error", { "devDependencies": true }],
     "@typescript-eslint/no-explicit-any": "off"
   },
-}
+};

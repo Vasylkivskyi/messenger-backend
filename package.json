@@ -7,9 +7,7 @@
     "dev": "nodemon",
     "start": "node -r ./bootstrap.js build/app.js",
     "build": "tsc --build tsconfig.build.json",
-    "lint": "eslint \"./src/**/*.ts\"",
-    "prettier:check": "prettier --config .prettierrc \"./src/**/*.+(js|json|ts)\" --check --ignore-unknown",
-    "prettier:write": "prettier --config .prettierrc \"./src/**/*.+(js|json|ts)\" --write --ignore-unknown"
+    "lint": "eslint \"./src/**/*.ts\""
   },
   "lint-staged": {
     "./src/**/*.+(ts|js)": [
