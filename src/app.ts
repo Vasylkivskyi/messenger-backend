@@ -1,11 +1,34 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, Router } from 'express';
+import http from 'http';
+import dotenv from 'dotenv';
+import socketIO, { Server } from "socket.io";
+import websocketContainer from './websockets';
 
+dotenv.config();
+const { PORT } = process.env;
 const app = express();
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello world');
+const router: Router = express.Router();
+const httpServer = http.createServer(app);
+const io: socketIO.Server = new Server( httpServer, {
+  cors: {
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    methods: ['GET', 'POST']
+  }
 });
 
-app.listen(8080, () => {
-  console.log('Listening on port 8080');
+router.use((req: Request, res: Response, next) => {
+  console.info('Time: ', Date.now());
+  next();
+});
+
+router.get('/', (req, res) => {
+  res.send('Birds home page');
+});
+
+app.use(router);
+
+io.on('connection', (socket: socketIO.Socket) => websocketContainer(socket, io));
+
+httpServer.listen(PORT, () => {
+  console.info(`Listening on port ${PORT}`);
 });
