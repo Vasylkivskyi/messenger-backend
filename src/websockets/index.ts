@@ -1,8 +1,8 @@
 import socketIO from "socket.io";
 
 
-const websocketContainer = (socket: socketIO.Socket, io: socketIO.Server): void => {
+const websocketController = (socket: socketIO.Socket, io: socketIO.Server): void => {
   console.info('hello');
 };
 
-export default websocketContainer;
+export default websocketController;
