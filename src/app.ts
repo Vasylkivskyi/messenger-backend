@@ -8,8 +8,8 @@ import morgan from 'morgan';
 import websocketController from './websockets';
 import connectDB from './config/db';
 import connectSockets from './config/sockets';
-import authRouter from './routes/authRouter';
-import errorHandler from './middleware/errorMiddleware';
+import userRoute from './routes/user.route';
+import errorHandler from './middleware/error.middleware';
 
 dotenv.config();
 connectDB();
@@ -21,8 +21,9 @@ const app: Application = express();
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ "extended": false }));
 
-app.use('/api/auth', authRouter);
+app.use('/api/user', userRoute);
 
 
 const { io, httpServer }: { io: Server, httpServer: HTTPServer } = connectSockets(app);
