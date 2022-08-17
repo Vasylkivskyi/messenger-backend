@@ -1,12 +1,17 @@
-import mongoose, { Document } from "mongoose";
+import { Request } from "express";
+import mongoose from "mongoose";
 
-export interface IUser extends Document {
+export interface IUser {
   nickname: string;
   hint: string;
-  password: string;
+  password?: string;
 }
 
-export interface Message extends Document {
+export interface Message {
   user: mongoose.Schema.Types.ObjectId
   text: string;
+}
+
+export interface IGetUserAuthInfoRequest extends Request {
+  user?: any; // or any other type
 }
