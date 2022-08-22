@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ "extended": false }));
 
 app.use('/api/user', userRoute);
-
+console.log('test commit')
 
 const { io, httpServer }: { io: Server, httpServer: HTTPServer } = connectSockets(app);
 io.on('connection', (socket: Socket) => websocketController(socket, io));
