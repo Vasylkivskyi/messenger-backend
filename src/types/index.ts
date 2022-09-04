@@ -2,7 +2,7 @@ import { Request } from "express";
 import mongoose from "mongoose";
 
 export interface IUser {
-  nickname: string;
+  username: string;
   hint: string;
   password?: string;
 }

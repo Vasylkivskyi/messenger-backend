@@ -8,23 +8,23 @@ import { IUser } from "~/types";
 const generateToken = (id: string): string => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 
 export const register = asyncHandler(async(req: Request, res: Response): Promise<void> => {
-  const { nickname, password, hint }: IUser = req.body;
-  if (!nickname || !password || !hint ) {
+  const { username, password, hint }: IUser = req.body;
+  if (!username || !password || !hint ) {
     res.status(400);
     throw new Error('Please add all fields');
   }
-  const userExists: IUser | null = await User.findOne({ nickname });
+  const userExists: IUser | null = await User.findOne({ username });
   if (userExists) {
     res.status(400);
-    throw new Error('Nickname is already used');
+    throw new Error('Username is already used');
   }
   const salt: string = await bcrypt.genSalt(10);
   const hashedPassword: string = await bcrypt.hash(password, salt);
-  const user = await User.create({ nickname, hint, password: hashedPassword });
+  const user = await User.create({ username, hint, password: hashedPassword });
   if (user) {
     res.status(201).json({
       id: user.id,
-      nickname: user.nickname,
+      username: user.username,
       token: generateToken(user.id),
     });
   } else {
@@ -34,17 +34,17 @@ export const register = asyncHandler(async(req: Request, res: Response): Promise
 });
 
 export const login = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { nickname, password } = req.body;
+  const { username, password } = req.body;
 
-  if (!nickname || !password) {
+  if (!username || !password) {
     res.status(400);
     throw new Error('Field missing');
   }
 
-  const user = await User.findOne({ nickname });
+  const user = await User.findOne({ username });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({ id: user.id, nickname: user.nickname, token: generateToken(user.id) });
+    res.json({ id: user.id, username: user.username, token: generateToken(user.id) });
   } else {
     res.status(400);
     throw new Error('Invalid credentials');
