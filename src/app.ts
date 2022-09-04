@@ -25,7 +25,6 @@ app.use(express.urlencoded({ "extended": false }));
 
 app.use('/api/user', userRoute);
 
-
 const { io, httpServer }: { io: Server, httpServer: HTTPServer } = connectSockets(app);
 io.on('connection', (socket: Socket) => websocketController(socket, io));
 app.use(errorHandler);
