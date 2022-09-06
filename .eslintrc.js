@@ -46,6 +46,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ["error", { "devDependencies": true }],
     "@typescript-eslint/no-explicit-any": "off",
     "no-unused-vars": "off",
+    "no-underscore-dangle": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn", // or "error"
       {

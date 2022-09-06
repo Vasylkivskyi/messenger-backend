@@ -5,6 +5,8 @@ const UserSchema: Schema = new mongoose.Schema({
   username: { type: String, required: [true, 'Please enter your username'], unique: true },
   hint: { type: String, required: [true, 'Without a hint, you will not restore your password'] },
   password: { type: String, required: [true, 'Please enter your password'] },
+  messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
+  rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
 }, { timestamps: true, });
 
 UserSchema.plugin(mongooseFuzzySearching, { fields: ['username'] });

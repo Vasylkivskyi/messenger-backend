@@ -49,7 +49,6 @@ export const login = asyncHandler(async (req: Request, res: Response): Promise<v
     res.status(400);
     throw new Error('Invalid credentials');
   }
-
 });
 
 export const search = asyncHandler(async (req: Request, res: Response): Promise<void> => {
