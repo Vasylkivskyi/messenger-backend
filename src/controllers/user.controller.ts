@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
-import User from "~/models/user.model";
-import { IUser } from "~/types";
+import { IUser } from "../types";
+import User from "../models/user.model";
 
 const generateToken = (id: string): string => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 
@@ -59,7 +59,7 @@ export const search = asyncHandler(async (req: Request, res: Response): Promise<
     throw new Error('Term is not provided');
   }
 
-  const users = await User.fuzzySearch(searchTerm).select("-password");
+  const users = await User.fuzzySearch(searchTerm).select("-password").limit(10);
   res.status(200).json(users);
 });
 

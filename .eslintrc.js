@@ -55,5 +55,17 @@ module.exports = {
         "caughtErrorsIgnorePattern": "_"
       }
     ],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "clear",
+          "info",
+          "error",
+          "dir",
+          "trace"
+        ]
+      }
+    ]
   },
 };

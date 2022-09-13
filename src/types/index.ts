@@ -1,6 +1,15 @@
+/* eslint-disable no-shadow */
 import { Request } from "express";
 import mongoose from "mongoose";
 
+export enum MessagesEvents {
+  CREATE_MESSAGE = "create_message",
+}
+
+export enum RoomEvents {
+  JOIN_ROOM = "join_room",
+  ROOM_CREATED = 'room_created'
+}
 export interface IUser {
   username: string;
   hint: string;
@@ -16,8 +25,8 @@ export interface Message {
 export interface IGetUserAuthInfoRequest extends Request {
   user?: any; // or any other type
 }
-
-export interface Room {
+export interface IRoom {
+  _id: string;
   users: [mongoose.Types.ObjectId];
   messages: [mongoose.Types.ObjectId];
 }

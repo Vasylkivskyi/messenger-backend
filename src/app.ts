@@ -28,7 +28,14 @@ app.use('/api/user', userRoute);
 app.use('/api/rooms', roomRouter);
 
 const { io, httpServer }: { io: Server, httpServer: HTTPServer } = connectSockets(app);
-io.on('connection', (socket: Socket) => websocketController(socket, io));
+
+io.on('connection', (socket: Socket) => {
+  console.info('user connected');
+  websocketController(socket, io);
+  socket.on('disconnect', () => {
+    console.info('user disconnected');
+  });
+});
 app.use(errorHandler);
 httpServer.listen(PORT, () => {
   console.info(`Listening on port ${PORT}`);
