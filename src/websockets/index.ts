@@ -1,12 +1,13 @@
 import socketIO from "socket.io";
 import { createMessage } from "~/controllers/message.controller";
-import { joinRoom } from "~/controllers/room.controller";
-import { MessagesEvents, RoomEvents } from "~/types";
+import { deleteSocketUser, upSaveSocketUser } from "~/controllers/socketUser.controller";
+import { MessagesEvents, SocketUserEvents } from "~/types";
 
 
 const websocketController = (socket: socketIO.Socket, io: socketIO.Server): void => {
-  socket.on(MessagesEvents.CREATE_MESSAGE, data => createMessage({ data, io}));
-  socket.on(RoomEvents.JOIN_ROOM, data => joinRoom({ data, socket, io }));
+  socket.on(SocketUserEvents.ADD_USER, userId => upSaveSocketUser({ socketId: socket.id, userId }));
+  socket.on(MessagesEvents.SEND_MESSAGE, data => createMessage({ data, io }));
+  socket.on('disconnect', () => deleteSocketUser({ socketId: socket.id }));
 };
 
 export default websocketController;

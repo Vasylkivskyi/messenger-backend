@@ -11,6 +11,7 @@ import connectSockets from './config/sockets';
 import userRoute from './routes/user.route';
 import errorHandler from './middleware/error.middleware';
 import roomRouter from './routes/room.route';
+import messagesRouter from './routes/messages.route';
 
 dotenv.config();
 connectDB();
@@ -26,10 +27,11 @@ app.use(express.urlencoded({ "extended": false }));
 
 app.use('/api/user', userRoute);
 app.use('/api/rooms', roomRouter);
+app.use('/api/messages', messagesRouter);
 
 const { io, httpServer }: { io: Server, httpServer: HTTPServer } = connectSockets(app);
 
-io.on('connection', (socket: Socket) => {
+io.on('connection', async (socket: Socket) => {
   console.info('user connected');
   websocketController(socket, io);
   socket.on('disconnect', () => {

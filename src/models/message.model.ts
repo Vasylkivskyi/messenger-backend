@@ -1,9 +1,8 @@
 import mongoose, { model, Schema } from "mongoose";
-import { Message } from "~/types";
 
-const MessageSchema: Schema = new mongoose.Schema<Message>({
-  user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
-  room: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Room" },
+const MessageSchema: Schema = new mongoose.Schema({
+  senderId: { type: String, required: true,  },
+  roomId: { type: String, required: true, },
   text: { type: String, required: true }
 }, { timestamps: true, });
 
