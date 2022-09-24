@@ -13,10 +13,9 @@ export const createMessage = async ({ data, io }) => {
     const room = await Room.findOne({ id: roomId })
       .populate({ path: 'members', model: 'User', select: ['id'] });
     if (room) {
-      const socketUsers = await SocketUser.find({ userId: { $in: room.members.map(m => m.id.toString()) } });
-      const senderSocketUser = await SocketUser.findOne({ userId: senderId });
-      socketUsers.forEach(u => io.to(u?.socketId))
-      io.to(senderSocketUser?.socketId).emit(MessagesEvents.RECEIVE_MESSAGE, { message: saved });
+      const membersIds = room.members.map(m => m.id.toString());
+      const socketUsers = await SocketUser.find({ userId: { $in: membersIds } });
+      socketUsers.forEach(u => io.to(u?.socketId).emit(MessagesEvents.RECEIVE_MESSAGE, { message: saved }));
     }
   }
 };

@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from "mongoose";
 
 const SocketUserSchema: Schema = new mongoose.Schema({
-  userId: { type: String, required: true,  },
+  userId: { type: String, required: true,  unique: true },
   socketId: { type: String, required: true, },
 }, { timestamps: true, });
 

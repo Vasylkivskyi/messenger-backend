@@ -4,8 +4,8 @@ import { NextFunction, Response } from 'express';
 import { IGetUserAuthInfoRequest } from '~/types';
 import User from '~/models/user.model';
 
-const auth = asyncHandler(async (
-    req: IGetUserAuthInfoRequest, res: Response, next: NextFunction
+export const auth = asyncHandler(async (
+  req: IGetUserAuthInfoRequest, res: Response, next: NextFunction
 ): Promise<void> => {
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -28,4 +28,14 @@ const auth = asyncHandler(async (
   }
 });
 
-export default auth;
+export const isValid = (token: string | undefined): boolean => {
+  if (!token) return false;
+  const withoutBearer = token.split(' ')[1];
+  try {
+    const result = jwt.verify(withoutBearer, process.env.JWT_SECRET);
+    return !!result.id;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};

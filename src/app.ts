@@ -12,6 +12,7 @@ import userRoute from './routes/user.route';
 import errorHandler from './middleware/error.middleware';
 import roomRouter from './routes/room.route';
 import messagesRouter from './routes/messages.route';
+import { isValid } from './middleware/auth.middleware';
 
 dotenv.config();
 connectDB();
@@ -31,12 +32,18 @@ app.use('/api/messages', messagesRouter);
 
 const { io, httpServer }: { io: Server, httpServer: HTTPServer } = connectSockets(app);
 
+io.use(async (socket, next) => {
+  const { authorization: token } = socket.handshake.headers;
+  if (isValid(token)) {
+    return next();
+  }
+  socket.disconnect();
+  return next(new Error('authentication error'));
+});
+
 io.on('connection', async (socket: Socket) => {
   console.info('user connected');
-  websocketController(socket, io);
-  socket.on('disconnect', () => {
-    console.info('user disconnected');
-  });
+  await websocketController(socket, io);
 });
 app.use(errorHandler);
 httpServer.listen(PORT, () => {
