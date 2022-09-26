@@ -10,8 +10,9 @@ export const createMessage = async ({ data, io }) => {
   const { senderId, roomId, text } = data;
   const saved = await Message.create({ text, roomId, senderId });
   if (saved) {
-    const room = await Room.findOne({ id: roomId })
+    const room = await Room.findById(roomId)
       .populate({ path: 'members', model: 'User', select: ['id'] });
+
     if (room) {
       const membersIds = room.members.map(m => m.id.toString());
       const socketUsers = await SocketUser.find({ userId: { $in: membersIds } });

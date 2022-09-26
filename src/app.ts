@@ -42,7 +42,7 @@ io.use(async (socket, next) => {
 });
 
 io.on('connection', async (socket: Socket) => {
-  console.info('user connected');
+  console.info(`user ${socket.id} connected`);
   await websocketController(socket, io);
 });
 app.use(errorHandler);
